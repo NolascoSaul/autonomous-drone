@@ -1,0 +1,219 @@
+<?xml version="1.0" ?>
+<sdf version="1.8">
+  <world name="arena_drone_tmr">
+    <!-- Plugins de física y renderizado -->
+    <plugin filename="gz-sim-physics-system" name="gz::sim::systems::Physics"></plugin>
+    <plugin filename="gz-sim-scene-broadcaster-system" name="gz::sim::systems::SceneBroadcaster"></plugin>
+    <plugin filename="gz-sim-user-commands-system" name="gz::sim::systems::UserCommands"></plugin>
+
+    <!-- Escena Indoor -->
+    <scene>
+      <ambient>0.85 0.85 0.85 1</ambient>
+      <background>0.8 0.8 0.8 1</background>
+      <shadows>false</shadows>
+    </scene>
+    <light type="directional" name="indoor_light">
+      <cast_shadows>false</cast_shadows>
+      <pose>5 5 4 0 0 0</pose>
+      <diffuse>0.9 0.9 0.9 1</diffuse>
+      <specular>0.1 0.1 0.1 1</specular>
+      <direction>-0.1 0.1 -0.9</direction>
+    </light>
+
+    <!-- Suelo -->
+    <model name="ground_plane">
+      <static>true</static>
+      <pose>5 5 0 0 0 0</pose>
+      <link name="link">
+        <collision name="collision"><geometry><plane><normal>0 0 1</normal><size>10 10</size></plane></geometry></collision>
+        <visual name="visual">
+          <geometry><plane><normal>0 0 1</normal><size>10 10</size></plane></geometry>
+          <material><ambient>0.6 0.6 0.6 1</ambient><diffuse>0.6 0.6 0.6 1</diffuse></material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- LÍMITES DE LA ARENA (10x10x4 m) -->
+    <model name="arena_boundary">
+      <static>true</static>
+      <!-- Pared X=0 (Cerca de la zona de despegue y estación de control) -->
+      <link name="wall_x0">
+        <pose>0 5 2 0 0 0</pose>
+        <collision name="col"><geometry><box><size>0.1 10 4</size></box></geometry></collision>
+        <visual name="vis">
+          <geometry><box><size>0.05 10 4</size></box></geometry>
+          <material><ambient>0.2 0.4 0.8 0.2</ambient><diffuse>0.2 0.4 0.8 0.2</diffuse></material>
+        </visual>
+      </link>
+      <!-- Pared X=10 (Fondo, detrás del pizarrón) -->
+      <link name="wall_x10">
+        <pose>10 5 2 0 0 0</pose>
+        <collision name="col"><geometry><box><size>0.1 10 4</size></box></geometry></collision>
+        <visual name="vis">
+          <geometry><box><size>0.05 10 4</size></box></geometry>
+          <material><ambient>0.2 0.4 0.8 0.2</ambient><diffuse>0.2 0.4 0.8 0.2</diffuse></material>
+        </visual>
+      </link>
+      <!-- Pared Y=0 (Lateral derecho, detrás de plataformas) -->
+      <link name="wall_y0">
+        <pose>5 0 2 0 0 0</pose>
+        <collision name="col"><geometry><box><size>10 0.1 4</size></box></geometry></collision>
+        <visual name="vis">
+          <geometry><box><size>10 0.05 4</size></box></geometry>
+          <material><ambient>0.2 0.4 0.8 0.2</ambient><diffuse>0.2 0.4 0.8 0.2</diffuse></material>
+        </visual>
+      </link>
+      <!-- Pared Y=10 (Lateral izquierdo) -->
+      <link name="wall_y10">
+        <pose>5 10 2 0 0 0</pose>
+        <collision name="col"><geometry><box><size>10 0.1 4</size></box></geometry></collision>
+        <visual name="vis">
+          <geometry><box><size>10 0.05 4</size></box></geometry>
+          <material><ambient>0.2 0.4 0.8 0.2</ambient><diffuse>0.2 0.4 0.8 0.2</diffuse></material>
+        </visual>
+      </link>
+      <!-- Techo de seguridad Z=4 -->
+      <link name="ceiling_z4">
+        <pose>5 5 4 0 0 0</pose>
+        <collision name="col"><geometry><box><size>10 10 0.1</size></box></geometry></collision>
+      </link>
+    </model>
+
+    <!-- MISIÓN 1: TÚNELES -->
+    <!-- Túnel 1.5x1.5m (Carril Anchol) -->
+    <model name="m1_tunel_ancho">
+      <static>true</static>
+      <pose>3.5 4.5 0 1.5708 0 1.5708</pose>
+      <link name="link">
+        <collision name="col"><geometry><mesh><uri>model://drone_description/meshes/m1_compuerta_ancha.stl</uri></mesh></geometry></collision>
+        <visual name="vis">
+          <geometry><mesh><uri>model://drone_description/meshes/m1_compuerta_ancha.stl</uri></mesh></geometry>
+        </visual>
+      </link>
+    </model>
+
+    <!-- Túnel 1.0x1.0m (Carril Medio) -->
+    <model name="m1_tunel_medio">
+      <static>true</static>
+      <pose>5.0 4.5 0 1.5708 0 1.5708</pose>
+      <link name="link">
+        <collision name="col"><geometry><mesh><uri>model://drone_description/meshes/m1_compuerta_media.stl</uri></mesh></geometry></collision>
+        <visual name="vis">
+          <geometry><mesh><uri>model://drone_description/meshes/m1_compuerta_media.stl</uri></mesh></geometry>
+        </visual>
+      </link>
+    </model>
+
+    <!-- Túnel 0.5x0.5m (Carril Estrecho) -->
+    <model name="m1_tunel_estrecho">
+      <static>true</static>
+      <pose>6.5 4.5 0 1.5708 0 1.5708</pose>
+      <link name="link">
+        <collision name="col"><geometry><mesh><uri>model://drone_description/meshes/m1_compuerta_chica.stl</uri></mesh></geometry></collision>
+        <visual name="vis">
+          <geometry><mesh><uri>model://drone_description/meshes/m1_compuerta_chica.stl</uri></mesh></geometry>
+        </visual>
+      </link>
+    </model>
+
+    <!-- MISIÓN 2: PIZARRÓN Y ARUCO ID 100 (Esquina superior derecha) -->
+    <model name="mision2_pizarron">
+      <static>true</static>
+      <pose>9.8 8.0 1.0 0 0 1.5708</pose>
+      <link name="link">
+        
+        <!-- 1. Estructura física del Pizarrón (1.5m de ancho x 1.2m de alto) -->
+        <collision name="col_pizarron">
+          <geometry><mesh><uri>model://drone_description/meshes/m2_pizarron.stl</uri></mesh></geometry>
+        </collision>
+        <visual name="vis_pizarron">
+          <geometry><mesh><uri>model://drone_description/meshes/m2_pizarron.stl</uri></mesh></geometry>
+          <!-- Pintado de blanco base -->
+          <material>
+            <ambient>0.95 0.95 0.95 1</ambient>
+            <diffuse>0.95 0.95 0.95 1</diffuse>
+          </material>
+        </visual>
+
+        <!-- 2. ArUco ID 100 de 20x20 cm -->
+        <visual name="vis_aruco">
+          <pose>0.90 -0.026 0.60 0 0 0</pose>
+          <geometry><box><size>0.20 0.001 0.20</size></box></geometry>
+          <material>
+            <diffuse>1 1 1 1</diffuse>
+            <pbr>
+              <metal>
+                <albedo_map>model://drone_description/materials/textures/m2_aruco.png</albedo_map>
+                <roughness>1.0</roughness>
+                <metalness>0.0</metalness>
+              </metal>
+            </pbr>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- MISIÓN 3: CAJAS DE BOTIQUÍN MÉDICO -->
+    <model name="m3_caja_1">
+      <static>true</static>
+      <pose>6.0 7.5 0.18 0 0 0.4</pose> 
+      <link name="link">
+        <collision name="col"><geometry><mesh><uri>model://drone_description/meshes/m3_caja_busqueda.stl</uri></mesh></geometry></collision>
+        <visual name="vis">
+          <geometry><mesh><uri>model://drone_description/meshes/m3_caja_busqueda.stl</uri></mesh></geometry>
+        </visual>
+      </link>
+    </model>
+
+    <model name="m3_caja_2">
+      <static>true</static>
+      <pose>8.0 5.0 0.18 0 0 -0.5</pose> 
+      <link name="link">
+        <collision name="col"><geometry><mesh><uri>model://drone_description/meshes/m3_caja_busqueda.stl</uri></mesh></geometry></collision>
+        <visual name="vis">
+          <geometry><mesh><uri>model://drone_description/meshes/m3_caja_busqueda.stl</uri></mesh></geometry>
+        </visual>
+      </link>
+    </model>
+
+    <!-- MISIÓN 4: PLATAFORMA DE ATERRIZAJE -->
+    <model name="mision4_plataforma">
+      <static>true</static>
+      <pose>8.0 1.5 0.15 0 0 0</pose>
+      <link name="link">
+        
+        <!-- Base de la plataforma -->
+        <collision name="col_plataforma">
+          <geometry><mesh><uri>model://drone_description/meshes/m4_plataforma_base.stl</uri></mesh></geometry>
+        </collision>
+        <visual name="vis_plataforma_base">
+          <geometry><mesh><uri>model://drone_description/meshes/m4_plataforma_base.stl</uri></mesh></geometry>
+          <material><ambient>0.8 0.8 0.8 1</ambient><diffuse>0.8 0.8 0.8 1</diffuse></material>
+        </visual>
+        
+        <!-- Sticker de la textura H de 1x1 metro -->
+        <visual name="vis_plataforma_textura">
+          <pose>0 0 0.01 0 0 0</pose>
+          <geometry><box><size>1.0 1.0 0.001</size></box></geometry>
+          <material>
+            <diffuse>1 1 1 1</diffuse>
+            <pbr>
+              <metal>
+                <albedo_map>model://drone_description/materials/textures/m4_plataforma.png</albedo_map>
+                <roughness>1.0</roughness>
+                <metalness>0.0</metalness>
+              </metal>
+            </pbr>
+          </material>
+        </visual>
+
+      </link>
+    </model>
+
+    <!-- DRON AUTÓNOMO X3-->
+    <include>
+      <pose>1.5 1.5 0.2 0 0 1.5708</pose>
+      <uri>model://drone_description/models/x3_uav</uri>
+    </include>
+  </world>
+</sdf>
