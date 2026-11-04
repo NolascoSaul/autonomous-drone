@@ -1,4 +1,8 @@
 build/
-install/
 log/
 .vscode/
+cmake_install.cmake
+bin/
+lib/
+msg_gen/
+srv_gen/
