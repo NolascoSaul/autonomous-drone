@@ -223,9 +223,6 @@
                 <update_rate>20</update_rate>
                 <air_pressure>
                     <reference_altitude>0</reference_altitude>
-                    <noise type="gaussian">
-                        <mean>0.00000008</mean>
-                    </noise>
                 </air_pressure>
             </sensor>
             <sensor name="magnetometer" type="magnetometer">
